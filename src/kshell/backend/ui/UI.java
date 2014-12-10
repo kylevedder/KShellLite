@@ -42,6 +42,7 @@ public class UI extends JFrame
     private static JScrollPane mainTextScroll = null;
     private static JPanel mainPanel = null;
     private UI thisUI = this;
+    private KeyInputHandler keyInputHandler = null;
 
     public UI()
     {
@@ -50,6 +51,7 @@ public class UI extends JFrame
 
     private void init()
     {       
+        keyInputHandler = KeyInputHandler.getInstance();
         mainTextScroll = new javax.swing.JScrollPane();
         mainText = new javax.swing.JTextArea();
         mainPanel = new JPanel();
@@ -81,7 +83,7 @@ public class UI extends JFrame
                         //ignored
                     }
                 });
-                KeyInputHandler.handleKeyInput(evt);
+                keyInputHandler.handleKeyInput(evt);
             }
         });
         mainTextScroll.setViewportView(mainText);

@@ -13,8 +13,36 @@ import java.awt.event.KeyEvent;
  */
 public class KeyInputHandler
 {
-    public static UserLine userLine = new UserLine();
-    public static void handleKeyInput(KeyEvent e)
+
+    public UserLine userLine = null;
+    private OpMode opMode = null;
+    private static KeyInputHandler keyInputHandler = null;
+
+    private KeyInputHandler()
+    {
+        userLine = new UserLine();
+        opMode = OpMode.MAIN;
+    }
+
+    /**
+     * Returns a singleton instance of this class.
+     * @return 
+     */
+    public static KeyInputHandler getInstance()
+    {
+        if (keyInputHandler == null)
+        {
+            keyInputHandler = new KeyInputHandler();
+        }
+        return keyInputHandler;
+    }
+
+    /**
+     * Takes the key input from the UI and handles it.
+     *
+     * @param e
+     */
+    public void handleKeyInput(KeyEvent e)
     {
         if (isKey(e, KeyEvent.VK_ENTER))
         {
@@ -22,7 +50,7 @@ public class KeyInputHandler
         }
         else if (isKey(e, KeyEvent.VK_UP))
         {
-            up(); 
+            up();
         }
         else if (isKey(e, KeyEvent.VK_DOWN))
         {
@@ -46,7 +74,17 @@ public class KeyInputHandler
         }
         System.out.println(userLine);
     }
-    
+
+    /**
+     * Sets the mode which the KeyHandler is operating in.
+     *
+     * @param opMode
+     */
+    public void setOpMode(OpMode opMode)
+    {
+        this.opMode = opMode;
+    }
+
     /**
      * Returns if the specified value is the key pressed.
      *
@@ -54,48 +92,61 @@ public class KeyInputHandler
      * @param code int value to compare against.
      * @return if key is he one specified.
      */
-    private static boolean isKey(KeyEvent e, int code)
+    private boolean isKey(KeyEvent e, int code)
     {
         return (e.getKeyChar() == code || e.getKeyCode() == code);
     }
-    
+
     /**
      * Adds the given key to the commandLine.
      *
      * @param e
      */
-    private static void typeKey(KeyEvent e)
+    private void typeKey(KeyEvent e)
     {
-        userLine.append(e.getKeyChar());        
+        if (opMode == OpMode.MAIN)
+        {
+            userLine.append(e.getKeyChar());
+        }
+        else if (opMode == OpMode.PASS_INPUT)
+        {
+
+        }
     }
 
-    private static void enter()
-    {
-        
-    }
-
-    private static void backspace()
-    {
-        userLine.removeLast();        
-    }
-
-    private static void up()
+    private void enter()
     {
 
     }
 
-    private static void down()
+    private void backspace()
+    {
+        userLine.removeLast();
+    }
+
+    private void up()
     {
 
     }
 
-    private static void escape()
+    private void down()
     {
 
     }
 
-    private static void tab()
+    private void escape()
     {
 
     }
+
+    private void tab()
+    {
+
+    }
+}
+
+enum OpMode
+{
+
+    MAIN, PASS_INPUT
 }
