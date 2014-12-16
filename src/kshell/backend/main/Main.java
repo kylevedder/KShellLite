@@ -24,9 +24,14 @@ public class Main
      */
     public static void main(String[] args) throws IOException
     {
-        UI ui =  new UI();
+        UI ui = new UI();
         ExecutorThread ex = new ExecutorThread();
         ex.start();
-    }    
+        int i = 0;
+        while (true)
+        {
+            i++;
+        }
+    }
 
 }
