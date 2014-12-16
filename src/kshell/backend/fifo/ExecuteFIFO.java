@@ -18,8 +18,7 @@ public class ExecuteFIFO
 {
 
     private static ExecuteFIFO executeFifo = null;
-    
-    private static String LOOKUP_FILE_LOCATION = "/kshell/lookupfile/lookupFile.txt";
+
 
     //object internal objects
     private Lock lock = null;
@@ -31,8 +30,8 @@ public class ExecuteFIFO
     {
         lock = new Lock();
         fifo = new ArrayList<>();
-        function = null;        
-        lookupList = new LookupList(new FileWrapper(this.getClass().getResource(LOOKUP_FILE_LOCATION).getFile()));
+        function = null;   
+        lookupList = new LookupList();
     }
 
     /**

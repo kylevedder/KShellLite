@@ -1,0 +1,4 @@
+//This is a command lookup file. All commands must be entered below in the proper format:
+//Examples:
+//functionName C:/path/to/function.jar
+//functionName ./relative/path/to/function.jar

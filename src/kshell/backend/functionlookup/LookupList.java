@@ -22,8 +22,10 @@ import kshell.backend.file.FileWrapper;
  */
 public class LookupList
 {
+    
+    private static String LOOKUP_FILE_LOCATION = "./lookupFile.txt";
 
-    File lookupFile;
+    FileWrapper lookupFile = null;
     boolean fileParsed = false;
     public static String FUNCTION_KEY = "command_name";
     public static String PATH_KEY = "jar_path";
@@ -34,9 +36,9 @@ public class LookupList
      *
      * @param lookupFile File to parse
      */
-    public LookupList(FileWrapper lookupFile)
+    public LookupList()
     {
-        this.lookupFile = lookupFile;
+        this.lookupFile = new FileWrapper(LOOKUP_FILE_LOCATION);
         if (this.lookupFile != null)
         {            
             //if file exists, parse
@@ -56,8 +58,11 @@ public class LookupList
         }
         else
         {
+            System.out.println("File Lookup Wrapper Null...");
             fileParsed = false;
         }
+        
+        
     }
 
     /**
@@ -132,8 +137,8 @@ public class LookupList
         String contents
                 = FileUtils.FILE_COMMENT_STARTER + "This is a command lookup file. All commands must be entered below in the proper format:\n\r"
                 + FileUtils.FILE_COMMENT_STARTER + "Examples:\n\r"
-                + FileUtils.FILE_COMMENT_STARTER + "functionName C:/path/to/function.jar"
-                + FileUtils.FILE_COMMENT_STARTER + "function ./relative/path/to/function.jar";
+                + FileUtils.FILE_COMMENT_STARTER + "functionName C:/path/to/function.jar\n\r"
+                + FileUtils.FILE_COMMENT_STARTER + "functionName ./relative/path/to/function.jar";
         FileUtils.createFile(f, contents);
     }
 
