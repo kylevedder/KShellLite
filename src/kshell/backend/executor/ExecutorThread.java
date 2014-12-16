@@ -12,6 +12,13 @@ package kshell.backend.executor;
 public class ExecutorThread extends Thread
 {
 
+    public ExecutorThread()
+    {
+        this.start();
+    }
+
+    
+    
     private volatile boolean isRunning = true;
 
     @Override

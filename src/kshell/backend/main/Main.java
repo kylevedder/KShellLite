@@ -9,7 +9,11 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import kshell.backend.executor.ExecutorThread;
+import kshell.backend.fifo.ExecuteFIFO;
+import kshell.backend.fifo.UIFIFO;
 import kshell.backend.ui.UI;
 
 /**
@@ -24,13 +28,18 @@ public class Main
      */
     public static void main(String[] args) throws IOException
     {
+        UIFIFO uiFifo = UIFIFO.getInstance();
+        ExecuteFIFO executeFifo = ExecuteFIFO.getInstance();
         UI ui = new UI();
-        ExecutorThread ex = new ExecutorThread();
-        ex.start();
-        int i = 0;
+        ExecutorThread ex = new ExecutorThread();          
         while (true)
-        {
-            i++;
+        {                      
+            //block for UI input
+            uiFifo.await();            
+            //get item
+            String fifoItem = uiFifo.popFirst();
+            System.out.println("Line: " + fifoItem);
+            ui.updateLine(fifoItem);
         }
     }
 

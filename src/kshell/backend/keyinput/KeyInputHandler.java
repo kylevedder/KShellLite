@@ -6,6 +6,8 @@
 package kshell.backend.keyinput;
 
 import java.awt.event.KeyEvent;
+import kshell.backend.fifo.ExecuteFIFO;
+import kshell.backend.fifo.UIFIFO;
 
 /**
  *
@@ -17,16 +19,21 @@ public class KeyInputHandler
     public UserLine userLine = null;
     private OpMode opMode = null;
     private static KeyInputHandler keyInputHandler = null;
+    private UIFIFO uififo = null;
+    private ExecuteFIFO executeFifo = null;
 
     private KeyInputHandler()
     {
         userLine = new UserLine();
-        opMode = OpMode.MAIN;
+        opMode = OpMode.FUNCTION;
+        uififo = UIFIFO.getInstance();
+        executeFifo = ExecuteFIFO.getInstance();
     }
 
     /**
      * Returns a singleton instance of this class.
-     * @return 
+     *
+     * @return
      */
     public static KeyInputHandler getInstance()
     {
@@ -104,19 +111,31 @@ public class KeyInputHandler
      */
     private void typeKey(KeyEvent e)
     {
-        if (opMode == OpMode.MAIN)
+        if (opMode == OpMode.FUNCTION)
         {
             userLine.append(e.getKeyChar());
+            uififo.addLineUpdate(userLine.toString());
         }
-        else if (opMode == OpMode.PASS_INPUT)
+        else if (opMode == OpMode.EXECUTE)
         {
-
+            executeFifo.addUserInput(userLine.toString());
+            userLine = new UserLine();
         }
     }
 
     private void enter()
     {
-
+        if (opMode == OpMode.FUNCTION)
+        {            
+            executeFifo.setFunction(userLine.toString());
+            uififo.addLineUpdate(userLine.toString() + "\n");
+            userLine = new UserLine();
+            
+        }
+        else if(opMode == OpMode.EXECUTE)
+        {
+            userLine.append("\n");
+        }
     }
 
     private void backspace()
@@ -143,10 +162,4 @@ public class KeyInputHandler
     {
 
     }
-}
-
-enum OpMode
-{
-
-    MAIN, PASS_INPUT
 }
